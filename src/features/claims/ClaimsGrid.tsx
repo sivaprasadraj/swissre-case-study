@@ -116,6 +116,7 @@ const COLUMNS: Column[] = [
 ]
 
 const ROW_HEIGHT = 44
+const MOBILE_ROW_HEIGHT = 150
 
 /* ------------------------------------------------------------------- screen */
 
@@ -176,6 +177,12 @@ export function ClaimsGrid(): React.JSX.Element {
 
   /* ------------------------------------------------------- virtualization */
 
+  const viewportWidth = useViewportWidth()
+  const isMobile = viewportWidth <= MOBILE_BREAKPOINT
+  const visibleColumns = useVisibleColumns(viewportWidth)
+  // Cards need more vertical room than a table row.
+  const rowHeight = isMobile ? MOBILE_ROW_HEIGHT : ROW_HEIGHT
+
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const virtualizer = useVirtualizer({
@@ -183,7 +190,7 @@ export function ClaimsGrid(): React.JSX.Element {
     getScrollElement: () => scrollRef.current,
     // Fixed row height: no measurement pass, no layout thrash, no cumulative
     // drift. Variable heights would force measureElement on every row.
-    estimateSize: () => ROW_HEIGHT,
+    estimateSize: () => rowHeight,
     // 8 rows of overscan. Enough that a fast flick doesn't reveal blank space,
     // small enough that the DOM stays tiny.
     overscan: 8,
@@ -191,6 +198,11 @@ export function ClaimsGrid(): React.JSX.Element {
   })
 
   const virtualRows = virtualizer.getVirtualItems()
+
+  // Re-measure when the row height changes (desktop table <-> mobile card).
+  useEffect(() => {
+    virtualizer.measure()
+  }, [rowHeight, virtualizer])
 
   /* ------------------------------------------- keyboard model (roving focus) */
 
@@ -328,8 +340,6 @@ export function ClaimsGrid(): React.JSX.Element {
     },
     [del, pushToast],
   )
-
-  const visibleColumns = useVisibleColumns()
 
   /**
    * Row callbacks are useCallback'd with empty-ish deps so their identity is
@@ -598,7 +608,7 @@ export function ClaimsGrid(): React.JSX.Element {
             aria-busy={isFetching || undefined}
             onKeyDown={onGridKeyDown}
           >
-            <div className="vgrid__head" role="row" aria-rowindex={1}>
+            <div className="vgrid__head" role="row" aria-rowindex={1} hidden={isMobile}>
               {visibleColumns.map((col, ci) => {
                 const sorted = state.sortField === col.key
                 return (
@@ -648,6 +658,8 @@ export function ClaimsGrid(): React.JSX.Element {
                       key={claim.id}
                       claim={claim}
                       columns={visibleColumns}
+                      isMobile={isMobile}
+                      rowHeight={rowHeight}
                       /* aria-rowindex is the row's position in the FULL set, so
                          the header is 1 and data rows start at 2, offset by the
                          current page. */
@@ -788,6 +800,8 @@ const ROW_SCOPE_NOTE: Record<string, string> = {
 interface ClaimRowProps {
   claim: Claim
   columns: Column[]
+  isMobile: boolean
+  rowHeight: number
   ariaRowIndex: number
   rowIndex: number
   isActive: boolean
@@ -811,6 +825,8 @@ interface ClaimRowProps {
 const ClaimRow = memo(function ClaimRow({
   claim,
   columns,
+  isMobile,
+  rowHeight,
   ariaRowIndex,
   rowIndex,
   isActive,
@@ -826,8 +842,8 @@ const ClaimRow = memo(function ClaimRow({
       role="row"
       aria-rowindex={ariaRowIndex}
       data-rowindex={rowIndex}
-      className={`vgrid__row ${isActive ? 'is-active' : ''}`}
-      style={{ transform: `translateY(${translateY}px)`, height: ROW_HEIGHT }}
+      className={`vgrid__row ${isActive ? 'is-active' : ''} ${isMobile ? 'vgrid__row--card' : ''}`}
+      style={{ transform: `translateY(${translateY}px)`, height: rowHeight }}
       /* Roving tabindex: exactly one row is tabbable, so Tab moves past the
          grid rather than through 100 rows, while arrows navigate within it. */
       tabIndex={isActive ? 0 : -1}
@@ -835,23 +851,70 @@ const ClaimRow = memo(function ClaimRow({
       onMouseEnter={() => onPrefetch(claim)}
       onDoubleClick={() => onOpen(claim)}
     >
-      {columns.map((col, ci) => (
-        <div
-          key={col.key}
-          role="gridcell"
-          aria-colindex={ci + 1}
-          className={`vgrid__td ${col.align === 'right' ? 'is-right' : ''}`}
-          style={{ width: col.width, flex: `0 0 ${col.width}px` }}
-        >
-          <Cell claim={claim} col={col} onOpen={onOpen} />
-        </div>
-      ))}
+      {isMobile ? (
+        <ClaimCardBody
+          claim={claim}
+          onOpen={onOpen}
+          onRequestAssign={onRequestAssign}
+          onRequestDelete={onRequestDelete}
+        />
+      ) : (
+        <>
+          {columns.map((col, ci) => (
+            <div
+              key={col.key}
+              role="gridcell"
+              aria-colindex={ci + 1}
+              className={`vgrid__td ${col.align === 'right' ? 'is-right' : ''}`}
+              style={{ width: col.width, flex: `0 0 ${col.width}px` }}
+            >
+              <Cell claim={claim} col={col} onOpen={onOpen} />
+            </div>
+          ))}
 
-      <div
-        role="gridcell"
-        aria-colindex={columns.length + 1}
-        className="vgrid__td vgrid__td--actions"
-      >
+          <div
+            role="gridcell"
+            aria-colindex={columns.length + 1}
+            className="vgrid__td vgrid__td--actions"
+          >
+            <RowActions
+              claim={claim}
+              onOpen={onOpen}
+              onRequestAssign={onRequestAssign}
+              onRequestDelete={onRequestDelete}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  )
+})
+
+/* --------------------------------------------------------- ClaimCardBody */
+
+/**
+ * Mobile card layout for a single claim. Shows the fields that matter for
+ * triage — claim number, claimant, status, priority, SLA, assignee — with the
+ * same actions menu as the desktop row.
+ */
+function ClaimCardBody({
+  claim,
+  onOpen,
+  onRequestAssign,
+  onRequestDelete,
+}: {
+  claim: Claim
+  onOpen: (c: Claim) => void
+  onRequestAssign: (c: Claim) => void
+  onRequestDelete: (c: Claim) => void
+}): React.JSX.Element {
+  const delta = slaDelta(claim.dueAt)
+  return (
+    <div className="claimcard" role="gridcell" aria-colindex={1}>
+      <div className="claimcard__top">
+        <button type="button" className="celllink" onClick={() => onOpen(claim)}>
+          {claim.claimNumber}
+        </button>
         <RowActions
           claim={claim}
           onOpen={onOpen}
@@ -859,9 +922,46 @@ const ClaimRow = memo(function ClaimRow({
           onRequestDelete={onRequestDelete}
         />
       </div>
+
+      <div className="claimcard__claimant">{claim.claimantName}</div>
+
+      <div className="claimcard__pills">
+        <Pill tone={STATUS_TONE[claim.status]}>{STATUS_LABEL[claim.status]}</Pill>
+        <Pill
+          tone={PRIORITY_TONE[claim.priority]}
+          icon={claim.priority === 'critical' ? <WarningIcon /> : undefined}
+        >
+          {PRIORITY_LABEL[claim.priority]}
+        </Pill>
+        <Pill
+          tone={SLA_TONE[claim.slaState]}
+          icon={
+            claim.slaState === 'breached' ? (
+              <WarningIcon />
+            ) : claim.slaState === 'at_risk' ? (
+              <ClockIcon />
+            ) : (
+              <CheckIcon />
+            )
+          }
+          title={`Due ${formatDate(claim.dueAt)} — ${delta.text}`}
+        >
+          {SLA_LABEL[claim.slaState]}
+        </Pill>
+      </div>
+
+      <div className="claimcard__meta">
+        <span>{claim.cedent}</span>
+        <span aria-hidden="true">·</span>
+        <span className="num">{formatMoney(claim.incurredAmount, claim.currency)}</span>
+        <span aria-hidden="true">·</span>
+        <span>
+          {claim.assigneeName ? shortenName(claim.assigneeName) : 'Unassigned'}
+        </span>
+      </div>
     </div>
   )
-})
+}
 
 /* -------------------------------------------------------------------- Cell */
 
@@ -1336,7 +1436,8 @@ function Chip({ label, onRemove }: { label: string; onRemove: () => void }): Rea
  * scrollbar. Uses a resize listener rather than CSS because the virtualizer
  * needs the real widths to compute layout.
  */
-function useVisibleColumns(): Column[] {
+/** Tracks the viewport width once, shared by the column set and mobile switch. */
+function useViewportWidth(): number {
   const [width, setWidth] = useState(() =>
     typeof window === 'undefined' ? 1600 : window.innerWidth,
   )
@@ -1354,6 +1455,13 @@ function useVisibleColumns(): Column[] {
     }
   }, [])
 
+  return width
+}
+
+/** Below this width the grid renders each claim as a stacked card, not a row. */
+const MOBILE_BREAKPOINT = 700
+
+function useVisibleColumns(width: number): Column[] {
   return useMemo(
     () => COLUMNS.filter((c) => !c.minViewport || width >= c.minViewport),
     [width],

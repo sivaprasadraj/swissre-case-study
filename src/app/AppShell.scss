@@ -4,6 +4,14 @@
   height: 100%;
 }
 
+/* Mobile top bar and scrim are desktop-hidden by default. */
+.topbar {
+  display: none;
+}
+.rail__scrim {
+  display: none;
+}
+
 .boot {
   display: flex;
   align-items: center;
@@ -334,4 +342,89 @@
   padding: var(--space-2) var(--space-3);
   display: flex;
   justify-content: flex-end;
+}
+
+/* ============================================================================
+   MOBILE (<= 900px): sidebar becomes a slide-out drawer behind a top bar.
+   ========================================================================== */
+@media (max-width: 900px) {
+  .shell {
+    /* Single column; the rail is taken out of flow and overlaid as a drawer. */
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    height: 52px;
+    padding: 0 var(--space-3);
+    background: var(--color-bg-surface);
+    border-bottom: 1px solid var(--color-border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+  }
+  .topbar__menu {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: var(--control-radius);
+    background: transparent;
+    color: var(--color-text-primary);
+    cursor: pointer;
+  }
+  .topbar__menu:hover {
+    background: var(--color-bg-hover);
+  }
+  .topbar__brand {
+    font-size: var(--text-md);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-primary);
+  }
+  .topbar__brand strong {
+    font-weight: var(--weight-bold);
+  }
+
+  /* Rail slides in from the left, above the content. */
+  .rail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(300px, 84vw);
+    z-index: var(--z-modal);
+    transform: translateX(-100%);
+    transition: transform var(--motion-base) var(--ease-standard);
+    box-shadow: var(--shadow-overlay);
+  }
+  .shell--nav-open .rail {
+    transform: translateX(0);
+  }
+
+  /* Dim scrim behind the open drawer. */
+  .shell--nav-open .rail__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-dropdown);
+    background: var(--color-bg-overlay);
+  }
+
+  /* The job tray shrinks to the screen width. */
+  .tray {
+    right: var(--space-3);
+    left: var(--space-3);
+    width: auto;
+  }
+}
+
+/* Respect users who prefer no motion: the drawer just appears. */
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .rail {
+    transition: none;
+  }
 }

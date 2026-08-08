@@ -483,3 +483,28 @@ body:has(.tray) .toasts {
 .progress--danger .progress__fill {
   background: var(--color-danger-fg);
 }
+
+/* ============================================================================
+   MOBILE tweaks for shared primitives.
+   ========================================================================== */
+@media (max-width: 700px) {
+  /* Toasts span the width with a small gutter instead of a fixed 420px. */
+  .toasts {
+    left: var(--space-3);
+    right: var(--space-3);
+  }
+  .toast {
+    max-width: none;
+  }
+  /* Modal scrim uses a tighter gutter so dialogs get more width. */
+  .modal__scrim {
+    padding: var(--space-4);
+  }
+  /* Modal footer buttons stack full-width so they're easy to tap. */
+  .modal__foot {
+    flex-direction: column-reverse;
+  }
+  .modal__foot .btn {
+    width: 100%;
+  }
+}

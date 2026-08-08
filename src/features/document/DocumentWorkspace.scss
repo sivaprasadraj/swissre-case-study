@@ -198,6 +198,95 @@
   }
 }
 
+/* ============================================================================
+   MOBILE (<= 900px): stack the workspace into a single column.
+   The sidebar becomes a short, horizontally-scrolling strip above the viewer
+   (thumbnails scroll sideways) rather than a tall column pushing the page down.
+   ========================================================================== */
+@media (max-width: 900px) {
+  .ws__head {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+  }
+  .ws__docpicker select {
+    max-width: 100%;
+  }
+
+  .ws__banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .ws__toolbar {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .ws__body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  /* Sidebar becomes a capped-height panel; its thumbnail rail scrolls
+     horizontally so it doesn't consume the whole screen. */
+  .ws__side {
+    flex: 0 0 auto;
+    max-height: 190px;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .ws__side .rail-thumbs {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    -webkit-overflow-scrolling: touch;
+  }
+  .ws__side .rail-thumbs li {
+    flex: 0 0 auto;
+  }
+  /* Comments / outline / versions lists still read top-to-bottom. */
+  .ws__side.ws__side--list {
+    max-height: 260px;
+  }
+
+  .ws__viewer {
+    /* `contain: strict` gives the element size containment, which collapses it
+       to zero height inside a flex column. Drop it on mobile and let the viewer
+       grow to fill the remaining space below the thumbnail strip. */
+    contain: none;
+    flex: 1 1 auto;
+    min-height: 60vh;
+    padding: var(--space-3);
+  }
+  /* Page fits the screen. The gutter (page number + select) sits above the
+     sheet so the sheet itself can use the full width. */
+  .pg {
+    flex-direction: column;
+    width: 100%;
+    gap: var(--space-1);
+  }
+  .pg__gutter {
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-3);
+    padding-top: 0;
+  }
+  /* max-width beats the inline width; aspect-ratio keeps it proportional
+     since the inline height would otherwise distort it. */
+  .pg__sheet {
+    max-width: 100%;
+    height: auto !important;
+    aspect-ratio: 210 / 297;
+  }
+}
+
 /* Tab labels must not truncate — "Comments (4)" carries the count, and "Co…"
  * loses it. Two rows of two is better than four unreadable labels. */
 .ws__tabs {

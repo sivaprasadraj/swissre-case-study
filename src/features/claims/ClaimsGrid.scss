@@ -699,3 +699,131 @@
   font-size: var(--text-xs);
   color: var(--color-success-fg);
 }
+
+/* ============================================================================
+   MOBILE CARD LAYOUT + RESPONSIVE REFLOW
+   ========================================================================== */
+
+/* Each claim as a stacked card. The row is still absolutely positioned by the
+   virtualizer; only its internal layout changes. */
+.vgrid__row--card {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.vgrid__row--card:hover {
+  background: var(--color-bg-surface);
+}
+
+.claimcard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+}
+.claimcard__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.claimcard__top .celllink {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+}
+/* Row actions are always visible on mobile — no hover to reveal them. */
+.vgrid__row--card .rowactions {
+  opacity: 1;
+}
+.claimcard__claimant {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+}
+.claimcard__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.claimcard__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 900px) {
+  /* The header row's `display: flex` overrides the HTML `hidden` attribute
+     (display wins), so hide it explicitly on mobile where cards need no headers. */
+  .vgrid__head[hidden] {
+    display: none;
+  }
+
+  .grid-screen {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+  .grid-screen__head {
+    gap: var(--space-3);
+  }
+  .grid-screen__head .search {
+    width: 100%;
+  }
+  .grid-screen__title {
+    font-size: var(--text-xl);
+  }
+
+  /* KPI tiles: horizontal scroll strip instead of a squashed row. */
+  .kpis {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: var(--space-2);
+    -webkit-overflow-scrolling: touch;
+  }
+  .kpis > .stat {
+    flex: 0 0 auto;
+    min-width: 150px;
+  }
+  .kpis > .stat + .stat {
+    border-left: 0;
+  }
+
+  /* Toolbar stacks; facets wrap and scroll if needed. */
+  .gridcard__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-4) var(--space-4) var(--space-3);
+  }
+  .gridcard__toolbar-side {
+    justify-content: space-between;
+  }
+  .facets {
+    overflow-x: auto;
+    padding-bottom: var(--space-1);
+  }
+  .facet__menu {
+    /* Keep dropdowns from overflowing the small viewport. */
+    max-width: calc(100vw - var(--space-8));
+  }
+}
+
+@media (max-width: 700px) {
+  /* Pagination: keep prev/next + summary, the numbered pages get cramped. */
+  .pager {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    text-align: center;
+  }
+  .pager__nav {
+    justify-content: center;
+  }
+  /* Hide the middle numbered buttons; prev/next/current remain. */
+  .pager__page:not(.is-current) {
+    display: none;
+  }
+  .pager__summary {
+    justify-content: center;
+  }
+}

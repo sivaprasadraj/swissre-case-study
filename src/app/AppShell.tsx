@@ -24,11 +24,28 @@ export function AppShell(): React.JSX.Element {
   const location = useLocation()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [trayOpen, setTrayOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
   const trayRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
   }, [theme])
+
+  // Close the mobile drawer whenever the route changes, so tapping a nav item
+  // or opening a claim doesn't leave the drawer covering the screen.
+  useEffect(() => {
+    setNavOpen(false)
+  }, [location.pathname])
+
+  // Escape closes the drawer.
+  useEffect(() => {
+    if (!navOpen) return
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') setNavOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [navOpen])
 
   /**
    * Publish the tray's height so toasts can stack above it instead of covering
@@ -59,10 +76,33 @@ export function AppShell(): React.JSX.Element {
   }, [jobs.activeCount])
 
   return (
-    <div className="shell">
+    <div className={`shell ${navOpen ? 'shell--nav-open' : ''}`}>
       <a href="#main" className="skip-link">
         Skip to main content
       </a>
+
+      {/* Mobile-only top bar with the drawer toggle. Hidden on desktop. */}
+      <header className="topbar">
+        <button
+          type="button"
+          className="topbar__menu"
+          aria-label={navOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={navOpen}
+          onClick={() => setNavOpen((o) => !o)}
+        >
+          <MenuIcon />
+        </button>
+        <span className="topbar__brand">
+          Claims<strong>Bench</strong>
+        </span>
+      </header>
+
+      {/* Scrim behind the drawer on mobile; tap to close. */}
+      <div
+        className="rail__scrim"
+        role="presentation"
+        onClick={() => setNavOpen(false)}
+      />
 
       <aside className="rail" aria-label="Primary">
         <div className="rail__brand">
@@ -261,6 +301,14 @@ function QueueIcon(): React.JSX.Element {
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <rect x="2.5" y="3" width="13" height="12" rx="2" stroke="currentColor" strokeWidth="1.4" />
       <path d="M2.5 7h13M7 7v8" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  )
+}
+
+function MenuIcon(): React.JSX.Element {
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M4 6h14M4 11h14M4 16h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   )
 }
