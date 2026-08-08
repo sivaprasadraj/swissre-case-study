@@ -1,0 +1,926 @@
+.ws {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--color-bg-canvas);
+}
+
+/* ------------------------------------------------------------------- head */
+
+.ws__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
+  flex: 0 0 auto;
+}
+.ws__headleft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.ws__crumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  min-width: 0;
+}
+.ws__crumb a {
+  color: var(--color-text-link);
+  text-decoration: none;
+}
+.ws__crumb a:hover {
+  text-decoration: underline;
+}
+.ws__crumb strong {
+  color: var(--color-text-primary);
+}
+.ws__claimant {
+  padding-left: var(--space-2);
+  border-left: 1px solid var(--color-border-default);
+}
+
+.ws__docpicker {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+.ws__docpicker select {
+  appearance: none;
+  max-width: 420px;
+  height: 32px;
+  padding: 0 var(--space-7) 0 var(--space-3);
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.ws__docpicker-chev {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+  display: flex;
+}
+
+/* ----------------------------------------------------------------- banner */
+
+.ws__banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+.ws__bannerinfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ws__bannerinfo strong {
+  font-size: var(--text-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ws__meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.ws__version {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: 1px var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-sunken);
+}
+.ws__badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------------- toolbar */
+
+.ws__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border-default);
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+.ws__tools {
+  display: inline-flex;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  overflow: hidden;
+  background: var(--color-bg-surface);
+}
+.ws__tool {
+  height: 30px;
+  padding: 0 var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.ws__tool + .ws__tool {
+  border-left: 1px solid var(--control-border);
+}
+.ws__tool.is-on {
+  background: var(--color-action-primary-subtle);
+  color: var(--color-action-primary);
+  font-weight: var(--weight-medium);
+}
+.ws__tool:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ws__zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.ws__zoomval {
+  min-width: 44px;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.ws__ops {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ------------------------------------------------------------------- body */
+
+.ws__body {
+  display: grid;
+  grid-template-columns: var(--thumbnail-rail-width) minmax(0, 1fr) 300px;
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 1280px) {
+  .ws__body {
+    grid-template-columns: var(--thumbnail-rail-width) minmax(0, 1fr);
+  }
+  .ws__text {
+    display: none;
+  }
+}
+
+/* Tab labels must not truncate — "Comments (4)" carries the count, and "Co…"
+ * loses it. Two rows of two is better than four unreadable labels. */
+.ws__tabs {
+  flex-wrap: wrap;
+}
+.ws__tabs button {
+  flex: 1 1 45%;
+  min-width: 0;
+}
+
+.ws__side {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border-subtle);
+}
+
+.ws__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border-subtle);
+  flex: 0 0 auto;
+}
+.ws__tabs button {
+  flex: 1;
+  padding: var(--space-2) var(--space-1);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ws__tabs button.is-on {
+  color: var(--color-action-primary);
+  border-bottom-color: var(--color-action-primary);
+  font-weight: var(--weight-medium);
+}
+
+.ws__sidebody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-3);
+}
+
+/* ---------------------------------------------------------- thumbnail rail */
+
+.rail-thumbs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.thumb {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  line-height: 0;
+}
+.thumb.is-current {
+  border-color: var(--color-action-primary);
+}
+.thumb.is-selected {
+  border-color: var(--color-danger-fg);
+}
+.thumb button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+}
+.thumb img {
+  display: block;
+  background: var(--palette-white);
+}
+.thumb__check {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  line-height: 1;
+}
+.thumb__check input {
+  accent-color: var(--color-danger-fg);
+}
+.thumb__num {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-overlay);
+  color: var(--palette-white);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+.thumb__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-action-primary);
+  color: var(--palette-white);
+  font-size: 9px;
+  font-weight: var(--weight-semibold);
+}
+
+/* ---------------------------------------------------------------- outline */
+
+.outline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.outline button {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+.outline button:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+.outline__page {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------- comments */
+
+.cmtlist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.cmt {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-subtle);
+}
+.cmt.is-resolved {
+  opacity: 0.7;
+}
+.cmt header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.cmt__author {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.cmt__page {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-link);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+.cmt p {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.cmt--orphan {
+  border-style: dashed;
+  border-color: var(--color-warning-border);
+}
+.cmtlist__orphans {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-default);
+}
+.cmtlist__orphans h4 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-warning-fg);
+  margin-bottom: var(--space-2);
+}
+
+/* --------------------------------------------------------------- versions */
+
+.versions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.versions li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid var(--color-border-default);
+  font-size: var(--text-sm);
+}
+.versions li.is-current {
+  border-left-color: var(--color-action-primary);
+  background: var(--color-bg-selected);
+}
+.versions__id {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.versions__note {
+  color: var(--color-text-secondary);
+}
+
+/* ----------------------------------------------------------------- viewer */
+
+.ws__viewer {
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  /* Isolates the page list from the rest of the layout. */
+  contain: strict;
+}
+.ws__pageskel {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.pg {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  /* Centres the page-plus-gutter unit rather than letting the gutter push the
+     sheet off-centre in the available width. */
+  margin: 0 auto;
+}
+
+.pg__gutter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+  width: 28px;
+  flex: 0 0 28px;
+}
+.pg__select input {
+  accent-color: var(--color-danger-fg);
+}
+.pg__num {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.pg__cmtcount {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  border-radius: var(--radius-pill);
+  background: var(--color-action-primary);
+  color: var(--palette-white);
+  font-size: 9px;
+  font-weight: var(--weight-semibold);
+}
+.pg__notext {
+  color: var(--color-warning-fg);
+  display: flex;
+}
+
+.pg__sheet {
+  position: relative;
+  background: var(--palette-white);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border-default);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.pg__sheet.is-selected {
+  outline: 2px solid var(--color-danger-fg);
+  outline-offset: 2px;
+}
+/* While an annotation tool is active, suppress text selection so a drag draws
+ * a rectangle instead of selecting the page text and scrolling. */
+.pg__sheet--highlight,
+.pg__sheet--redact {
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pg__sheet--comment {
+  cursor: copy;
+}
+
+.pg__img,
+.pg__lowres {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: opacity var(--motion-base) var(--ease-standard);
+  /* Never let the browser drag the page image itself. */
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+/* Blurred upscaled thumbnail behind the full render — content appears in ~40ms
+ * instead of a blank rectangle. */
+.pg__lowres {
+  filter: blur(6px);
+  transform: scale(1.02);
+}
+
+.pg__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--palette-grey-050),
+    var(--palette-grey-050) 12px,
+    var(--palette-white) 12px,
+    var(--palette-white) 24px
+  );
+  color: var(--palette-grey-400);
+  font-size: var(--text-base);
+}
+.pg__placeholder small {
+  font-size: var(--text-xs);
+}
+
+/* -------------------------------------------------------------- overlays */
+
+.pg__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ann {
+  position: absolute;
+  border: 1.5px solid;
+  border-radius: 2px;
+}
+.ann--highlight {
+  background: color-mix(in srgb, var(--palette-amber-500) 32%, transparent);
+}
+.ann--redaction {
+  background: var(--palette-grey-900);
+  border-color: var(--palette-grey-900);
+}
+.ann--note {
+  background: color-mix(in srgb, var(--palette-indigo-500) 18%, transparent);
+}
+.ann--draft {
+  border-style: dashed;
+  opacity: 0.8;
+}
+
+/* A removable annotation accepts hover/click so its delete button works, and
+ * shows a subtle hint that it is interactive. */
+.ann--removable {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.ann--removable:hover {
+  outline: 1.5px solid var(--color-danger-fg);
+  outline-offset: 1px;
+}
+.ann__remove {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1.5px solid var(--palette-white);
+  border-radius: var(--radius-pill);
+  background: var(--color-danger-fg);
+  color: var(--palette-white);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  pointer-events: auto;
+}
+.ann--removable:hover .ann__remove {
+  display: grid;
+}
+.ann__remove:hover {
+  filter: brightness(1.1);
+}
+
+/* Wrapper positions the pin at the anchor; the popover anchors to the wrapper. */
+.cmtpin-wrap {
+  position: absolute;
+  transform: translate(-11px, -11px);
+  pointer-events: auto;
+}
+.cmtpin {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 2px solid var(--palette-white);
+  border-radius: var(--radius-pill) var(--radius-pill) var(--radius-pill) 2px;
+  background: var(--color-action-primary);
+  color: var(--palette-white);
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-raised);
+  cursor: pointer;
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+.cmtpin:hover {
+  transform: scale(1.12);
+}
+.cmtpin.is-resolved {
+  background: var(--color-success-fg);
+}
+
+/* Popover that shows the existing comment when its pin is clicked. */
+.cmtpop {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  z-index: 3;
+  width: 260px;
+  padding: var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-overlay);
+  cursor: default;
+}
+.cmtpop__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.cmtpop__author {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+.cmtpop__resolved {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--text-xs);
+  color: var(--color-success-fg);
+}
+.cmtpop__body {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.cmtpop__close {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text-link);
+  cursor: pointer;
+}
+.cmtpop__close:hover {
+  text-decoration: underline;
+}
+/* Optimistic comments read as pending until the server confirms. */
+.cmtpin.is-pending {
+  opacity: 0.6;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  50% {
+    opacity: 1;
+  }
+}
+
+.cmtdraft {
+  position: absolute;
+  z-index: 2;
+  width: 240px;
+  padding: var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-overlay);
+  pointer-events: auto;
+}
+.cmtdraft textarea {
+  width: 100%;
+  min-height: 66px;
+  padding: var(--space-2);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  resize: vertical;
+}
+.cmtdraft__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.cmtdraft__actions small {
+  margin-right: auto;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------------------------------------- text panel */
+
+.ws__text {
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-4);
+  background: var(--color-bg-surface);
+  border-left: 1px solid var(--color-border-subtle);
+}
+.textpanel__head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--text-base);
+  margin-bottom: var(--space-3);
+}
+.textpanel__hint {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+.textpanel__body {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+.textpanel__skel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.textpanel__none {
+  padding: var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  font-size: var(--text-sm);
+}
+.textpanel__none p {
+  margin: var(--space-2) 0 0;
+}
+
+/* ------------------------------------------------------------------ misc */
+
+.ws__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-9);
+  text-align: center;
+}
+.ws__empty p {
+  max-width: 460px;
+  color: var(--color-text-muted);
+}
+.ws__hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.field span {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+}
+.field input {
+  height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: var(--text-base);
+}
+
+.execnote {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  border-radius: var(--radius-control);
+  border-left: 3px solid;
+  font-size: var(--text-sm);
+}
+.execnote.is-client {
+  background: var(--color-success-bg);
+  border-left-color: var(--color-success-fg);
+  color: var(--color-success-fg);
+}
+.execnote.is-server {
+  background: var(--color-action-primary-subtle);
+  border-left-color: var(--color-action-primary);
+  color: var(--color-action-primary);
+}
+
+.mergelist {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.mergelist label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+.mergelist label:hover {
+  background: var(--color-bg-hover);
+}
+.mergelist__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+}
+.mergelist__meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.failsim {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px dashed var(--color-warning-border);
+  border-radius: var(--radius-control);
+  background: var(--color-warning-bg);
+  cursor: pointer;
+}
+.failsim span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.failsim strong {
+  font-size: var(--text-sm);
+  color: var(--color-warning-fg);
+}
+.failsim small {
+  font-size: var(--text-xs);
+  color: var(--color-warning-fg);
+  opacity: 0.9;
+  line-height: 1.45;
+}

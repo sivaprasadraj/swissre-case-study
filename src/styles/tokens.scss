@@ -1,0 +1,262 @@
+/**
+ * Design tokens extracted from the provided Figma reference
+ * ("CRM Dashboard Customers List", Figma Community).
+ *
+ * Three deliberate tiers. Feature code may ONLY reference tier 2 and 3.
+ * An ESLint rule bans raw hex/px in feature code (see design doc: Governance).
+ *
+ *   Tier 1  --palette-*     Raw values. The only place a hex literal appears.
+ *   Tier 2  --color-*       Semantic roles. What the colour MEANS, not what it is.
+ *   Tier 3  --<component>-* Component-scoped tokens that alias tier 2.
+ *
+ * Dark mode works because feature code never touched tier 1: we re-point the
+ * semantic layer under [data-theme='dark'] and every component follows.
+ */
+
+:root {
+  /* ---------------------------------------------------------------------
+   * TIER 1 — RAW PALETTE (extracted from Figma)
+   * ------------------------------------------------------------------- */
+
+  /* Brand indigo — the active nav pill and active pagination page */
+  --palette-indigo-600: #5932ea;
+  --palette-indigo-500: #7a5af5;
+  --palette-indigo-100: #e8e0fd;
+  --palette-indigo-050: #f4f1fe;
+
+  /* Mint — success / "Active" status pill, KPI icon badges */
+  --palette-mint-600: #16c098;
+  --palette-mint-500: #29cc9b;
+  --palette-mint-100: #d3fbe8;
+  --palette-mint-050: #e9fbf3;
+
+  /* Soft red — danger / "Inactive" status pill */
+  --palette-red-600: #df0404;
+  --palette-red-500: #f43f3f;
+  --palette-red-100: #ffc5c5;
+  --palette-red-050: #fff0f0;
+
+  /* Amber — added for claims SLA states, absent from the reference design */
+  --palette-amber-600: #b25e09;
+  --palette-amber-500: #f0a22e;
+  --palette-amber-100: #fdecd2;
+  --palette-amber-050: #fff8ee;
+
+  /* Neutrals — page background is a very light lavender-grey, cards are white */
+  --palette-white: #ffffff;
+  --palette-grey-025: #fbfbfd;
+  --palette-grey-050: #f7f8fc;
+  --palette-grey-100: #f0f1f7;
+  --palette-grey-200: #e6e8f0;
+  --palette-grey-300: #d2d4de;
+  --palette-grey-400: #a3a8b8;
+  --palette-grey-500: #7b8199;
+  --palette-grey-600: #575c6e;
+  --palette-grey-700: #3c4055;
+  --palette-grey-800: #292d32;
+  --palette-grey-900: #16171b;
+
+  --palette-focus: #1a73e8;
+
+  /* ---------------------------------------------------------------------
+   * TIER 2 — SEMANTIC ROLES
+   * ------------------------------------------------------------------- */
+
+  --color-bg-canvas: var(--palette-grey-050);
+  --color-bg-surface: var(--palette-white);
+  --color-bg-surface-raised: var(--palette-white);
+  --color-bg-subtle: var(--palette-grey-025);
+  --color-bg-sunken: var(--palette-grey-100);
+  --color-bg-hover: var(--palette-grey-050);
+  --color-bg-selected: var(--palette-indigo-050);
+  --color-bg-overlay: rgba(22, 23, 27, 0.45);
+
+  --color-text-primary: var(--palette-grey-800);
+  --color-text-secondary: var(--palette-grey-600);
+  --color-text-muted: var(--palette-grey-500);
+  --color-text-disabled: var(--palette-grey-400);
+  --color-text-inverse: var(--palette-white);
+  --color-text-link: var(--palette-indigo-600);
+
+  --color-border-default: var(--palette-grey-200);
+  --color-border-strong: var(--palette-grey-300);
+  --color-border-subtle: var(--palette-grey-100);
+
+  --color-action-primary: var(--palette-indigo-600);
+  --color-action-primary-hover: var(--palette-indigo-500);
+  --color-action-primary-subtle: var(--palette-indigo-050);
+
+  /* Status roles. NOTE: text tokens are the -600 ramp, not the -500 used for
+   * fills, because mint-500 on white fails WCAG 2.2 AA for body text.
+   * See design doc: Accessibility / Colour contrast. */
+  --color-success-fg: var(--palette-mint-600);
+  --color-success-bg: var(--palette-mint-100);
+  --color-success-border: var(--palette-mint-500);
+
+  --color-danger-fg: var(--palette-red-600);
+  --color-danger-bg: var(--palette-red-100);
+  --color-danger-border: var(--palette-red-500);
+
+  --color-warning-fg: var(--palette-amber-600);
+  --color-warning-bg: var(--palette-amber-100);
+  --color-warning-border: var(--palette-amber-500);
+
+  --color-neutral-fg: var(--palette-grey-600);
+  --color-neutral-bg: var(--palette-grey-100);
+  --color-neutral-border: var(--palette-grey-300);
+
+  --color-focus-ring: var(--palette-focus);
+
+  /* ---------------------------------------------------------------------
+   * TIER 2 — SCALES (spacing, radius, type, elevation, motion)
+   * ------------------------------------------------------------------- */
+
+  /* 4px base scale; the reference design's card padding lands on 24-32px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+
+  --radius-sm: 4px;
+  --radius-control: 8px;
+  --radius-md: 12px;
+  --radius-card: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /**
+   * The reference design specifies Poppins. We use it when it happens to be
+   * installed and fall back to the system UI stack otherwise, rather than
+   * fetching it from a third-party CDN — see the note in index.html.
+   *
+   * Production self-hosts a licensed subset; that is a one-line change here plus
+   * an @font-face, and no component is affected because nothing references a
+   * font family directly.
+   */
+  --font-sans: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI Variable Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 28px;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+
+  --shadow-card: 0 4px 20px rgba(89, 50, 234, 0.05);
+  --shadow-raised: 0 8px 28px rgba(22, 23, 27, 0.12);
+  --shadow-overlay: 0 16px 48px rgba(22, 23, 27, 0.18);
+
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+
+  --z-sticky: 10;
+  --z-dropdown: 100;
+  --z-jobtray: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /* ---------------------------------------------------------------------
+   * TIER 3 — COMPONENT TOKENS
+   * ------------------------------------------------------------------- */
+
+  --sidebar-width: 240px;
+  --sidebar-bg: var(--color-bg-surface);
+  --sidebar-item-active-bg: var(--color-action-primary);
+  --sidebar-item-active-fg: var(--color-text-inverse);
+
+  --card-bg: var(--color-bg-surface);
+  --card-radius: var(--radius-card);
+  --card-padding: var(--space-7);
+  --card-shadow: var(--shadow-card);
+
+  /* 44px rows: dense enough for triage scanning, still a comfortable
+   * pointer target. Fixed height is what lets the virtualizer skip
+   * measurement entirely. See design doc: Rendering. */
+  --grid-row-height: 44px;
+  --grid-header-height: 40px;
+  --grid-cell-px: var(--space-4);
+
+  --control-height: 36px;
+  --control-radius: var(--radius-control);
+  --control-border: var(--color-border-default);
+
+  --thumbnail-width: 108px;
+  --thumbnail-rail-width: 148px;
+}
+
+[data-theme='dark'] {
+  /* Only the semantic tier is re-pointed. No component or feature code changes. */
+  --color-bg-canvas: #14151a;
+  --color-bg-surface: #1c1e25;
+  --color-bg-surface-raised: #23262f;
+  --color-bg-subtle: #191b21;
+  --color-bg-sunken: #101116;
+  --color-bg-hover: #23262f;
+  --color-bg-selected: #2a2450;
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+  --color-text-primary: #eceef4;
+  --color-text-secondary: #b0b5c4;
+  --color-text-muted: #888ea1;
+  --color-text-disabled: #5b6072;
+  --color-text-inverse: #14151a;
+  --color-text-link: #a992ff;
+
+  --color-border-default: #2e313b;
+  --color-border-strong: #3d4150;
+  --color-border-subtle: #24262e;
+
+  --color-action-primary: #7a5af5;
+  --color-action-primary-hover: #8f73f7;
+  --color-action-primary-subtle: #241f42;
+
+  /* Fills darken and foregrounds lighten to hold contrast on dark surfaces */
+  --color-success-fg: #4adeac;
+  --color-success-bg: #10352a;
+  --color-success-border: #1c7a5e;
+
+  --color-danger-fg: #ff8080;
+  --color-danger-bg: #3d1717;
+  --color-danger-border: #a13030;
+
+  --color-warning-fg: #f5bd63;
+  --color-warning-bg: #3a2a10;
+  --color-warning-border: #9a6a1c;
+
+  --color-neutral-fg: #b0b5c4;
+  --color-neutral-bg: #262933;
+  --color-neutral-border: #3d4150;
+
+  --color-focus-ring: #6ea8fe;
+
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-raised: 0 8px 28px rgba(0, 0, 0, 0.5);
+  --shadow-overlay: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+  }
+}

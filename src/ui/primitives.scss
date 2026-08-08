@@ -1,0 +1,485 @@
+/* Primitive styles. Every value resolves to a token — no raw hex, no magic px. */
+
+/* ------------------------------------------------------------------ Button */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--control-height);
+  padding: 0 var(--space-4);
+  border-radius: var(--control-radius);
+  border: 1px solid transparent;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard);
+}
+
+.btn--sm {
+  height: 30px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.btn--icon {
+  width: var(--control-height);
+  padding: 0;
+}
+.btn--icon.btn--sm {
+  width: 30px;
+}
+
+.btn--primary {
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-action-primary-hover);
+}
+
+.btn--secondary {
+  background: var(--color-bg-surface);
+  border-color: var(--control-border);
+  color: var(--color-text-secondary);
+}
+.btn--secondary:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+.btn--ghost:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.btn--danger {
+  background: var(--color-danger-fg);
+  color: var(--color-text-inverse);
+}
+.btn--danger:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+/* Disabled is visually quiet but must remain legible — a disabled control the
+ * user cannot read is worse than a hidden one. */
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.btn__spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-pill);
+  animation: spin 620ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn__spinner {
+    animation-duration: 2s;
+  }
+}
+
+/* -------------------------------------------------------------------- Pill */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.pill__icon {
+  display: inline-flex;
+}
+
+.pill--success {
+  background: var(--color-success-bg);
+  color: var(--color-success-fg);
+  border-color: var(--color-success-border);
+}
+.pill--danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+  border-color: var(--color-danger-border);
+}
+.pill--warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  border-color: var(--color-warning-border);
+}
+.pill--neutral {
+  background: var(--color-neutral-bg);
+  color: var(--color-neutral-fg);
+  border-color: var(--color-neutral-border);
+}
+.pill--brand {
+  background: var(--color-action-primary-subtle);
+  color: var(--color-action-primary);
+  border-color: var(--color-action-primary);
+}
+
+/* -------------------------------------------------------------------- Card */
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--color-border-subtle);
+}
+.card--padded {
+  padding: var(--card-padding);
+}
+
+/* ---------------------------------------------------------------- StatTile */
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  text-align: left;
+  font-family: inherit;
+}
+
+.stat--interactive {
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+.stat--interactive:hover {
+  background: var(--color-bg-hover);
+}
+.stat--active {
+  background: var(--color-bg-selected);
+  border-color: var(--color-action-primary);
+}
+
+.stat__badge {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+}
+.stat__badge--brand {
+  background: var(--color-action-primary-subtle);
+  color: var(--color-action-primary);
+}
+.stat__badge--success {
+  background: var(--color-success-bg);
+  color: var(--color-success-fg);
+}
+.stat__badge--danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+.stat__badge--warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+}
+.stat__badge--neutral {
+  background: var(--color-neutral-bg);
+  color: var(--color-neutral-fg);
+}
+
+.stat__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.stat__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.stat__value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  font-variant-numeric: tabular-nums;
+}
+.stat__delta {
+  font-size: var(--text-xs);
+  margin-top: 2px;
+}
+.stat__delta--good {
+  color: var(--color-success-fg);
+}
+.stat__delta--bad {
+  color: var(--color-danger-fg);
+}
+.stat__delta--neutral {
+  color: var(--color-text-muted);
+}
+
+/* ----------------------------------------------------------------- Tooltip */
+
+.tip {
+  position: relative;
+  display: inline-flex;
+}
+.tip__bubble {
+  position: absolute;
+  bottom: calc(100% + var(--space-2));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-dropdown);
+  width: max-content;
+  max-width: 260px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--palette-grey-800);
+  color: var(--palette-white);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  box-shadow: var(--shadow-raised);
+  pointer-events: none;
+  white-space: normal;
+}
+[data-theme='dark'] .tip__bubble {
+  background: var(--color-bg-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+/* ------------------------------------------------------------------ Search */
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.search__icon {
+  position: absolute;
+  left: var(--space-3);
+  display: flex;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+.search__input {
+  width: 100%;
+  height: var(--control-height);
+  padding: 0 var(--space-4) 0 var(--space-8);
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  font-family: inherit;
+}
+.search__input::placeholder {
+  color: var(--color-text-muted);
+}
+.search__input:focus-visible {
+  border-color: var(--color-action-primary);
+  background: var(--color-bg-surface);
+}
+.search__input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+.search__spinner {
+  position: absolute;
+  right: var(--space-3);
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-action-primary);
+  border-right-color: transparent;
+  border-radius: var(--radius-pill);
+  animation: spin 620ms linear infinite;
+}
+
+/* ---------------------------------------------------------------- Skeleton */
+
+.skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-sunken) 25%,
+    var(--color-border-subtle) 37%,
+    var(--color-bg-sunken) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.3s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------- Modal */
+
+.modal__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background: var(--color-bg-overlay);
+  animation: fade var(--motion-fast) var(--ease-standard);
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.modal {
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-overlay);
+}
+.modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.modal__title {
+  font-size: var(--text-md);
+}
+.modal__body {
+  padding: var(--space-6);
+  overflow: auto;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+}
+.modal__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* ------------------------------------------------------------------ Toasts */
+
+.toasts {
+  position: fixed;
+  right: var(--space-6);
+  /* Sits above the job tray rather than on top of it. Both live bottom-right,
+   * and a toast covering the tray's Cancel button makes a long-running
+   * operation uncancellable — caught by the E2E pass, not by eye. */
+  bottom: var(--space-6);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  /* The container must not intercept clicks; only the toasts themselves do. */
+  pointer-events: none;
+}
+
+/* When the tray is present it claims the bottom-right corner and toasts stack
+ * above it. The tray sets this custom property on :root. */
+body:has(.tray) .toasts {
+  bottom: calc(var(--space-6) + var(--tray-height, 56px));
+}
+.toasts__region {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 420px;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border-radius: var(--radius-control);
+  border-left: 3px solid transparent;
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-raised);
+  font-size: var(--text-base);
+  pointer-events: auto;
+  animation: slide-in var(--motion-base) var(--ease-standard);
+}
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.toast--success {
+  border-left-color: var(--color-success-fg);
+}
+.toast--error {
+  border-left-color: var(--color-danger-fg);
+}
+.toast--info {
+  border-left-color: var(--color-action-primary);
+}
+.toast__msg {
+  flex: 1;
+  color: var(--color-text-primary);
+}
+
+/* ---------------------------------------------------------------- Progress */
+
+.progress {
+  width: 100%;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-sunken);
+  overflow: hidden;
+}
+.progress__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  transition: width var(--motion-base) var(--ease-standard);
+}
+.progress--brand .progress__fill {
+  background: var(--color-action-primary);
+}
+.progress--success .progress__fill {
+  background: var(--color-success-fg);
+}
+.progress--danger .progress__fill {
+  background: var(--color-danger-fg);
+}

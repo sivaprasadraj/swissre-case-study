@@ -1,0 +1,701 @@
+.grid-screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-7);
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.grid-screen__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+.grid-screen__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+}
+.grid-screen__sub {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+}
+.grid-screen__scope {
+  font-style: italic;
+}
+.grid-screen__head .search {
+  width: 320px;
+  max-width: 100%;
+}
+
+/* -------------------------------------------------------------------- KPIs */
+
+.kpis {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: var(--space-5) var(--space-4);
+  flex-wrap: wrap;
+}
+.kpis > .stat + .stat {
+  border-left: 1px solid var(--color-border-subtle);
+}
+.kpis__loading {
+  display: flex;
+  gap: var(--space-7);
+  width: 100%;
+}
+.kpis__skel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: 1;
+}
+.kpis__skeltext {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+/* --------------------------------------------------------------- grid card */
+
+.gridcard {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.gridcard__toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-6) var(--space-4);
+  flex-wrap: wrap;
+}
+.gridcard__toolbar-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.gridcard__toolbar-side {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.gridcard__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--text-lg);
+}
+.gridcard__count {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+.gridcard__took {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-sunken);
+}
+
+.pagesize select,
+.facet__btn {
+  height: 32px;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.pagesize select {
+  padding: 0 var(--space-3);
+  appearance: none;
+}
+
+/* ------------------------------------------------------------------ facets */
+
+.facets {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.facet {
+  position: relative;
+}
+.facet__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+}
+.facet__btn:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+.facet__btn.is-on {
+  border-color: var(--color-action-primary);
+  color: var(--color-action-primary);
+  background: var(--color-action-primary-subtle);
+}
+.facet__badge {
+  display: grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
+  font-size: var(--text-xs);
+}
+
+.facet__menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  z-index: var(--z-dropdown);
+  min-width: 220px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: var(--space-2);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+}
+.facet__menu label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+.facet__menu label:hover {
+  background: var(--color-bg-hover);
+}
+.facet__menu label.is-empty {
+  opacity: 0.45;
+}
+.facet__menu input {
+  accent-color: var(--color-action-primary);
+}
+.facet__label {
+  flex: 1;
+}
+.facet__count {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------- segmented */
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  overflow: hidden;
+}
+.segmented button {
+  height: 32px;
+  padding: 0 var(--space-3);
+  border: 0;
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.segmented button + button {
+  border-left: 1px solid var(--control-border);
+}
+.segmented button.is-on {
+  background: var(--color-action-primary-subtle);
+  color: var(--color-action-primary);
+  font-weight: var(--weight-medium);
+}
+
+/* ------------------------------------------------------------------- chips */
+
+.chips {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-6) var(--space-4);
+  flex-wrap: wrap;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 3px var(--space-1) 3px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+.chip button {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+}
+.chip button:hover {
+  background: var(--color-border-default);
+  color: var(--color-text-primary);
+}
+
+/* ------------------------------------------------------------ virtual grid */
+
+.vgrid {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: var(--text-base);
+}
+
+/* When showing the previous page while the next loads, dim slightly so the
+ * staleness is visible without a jarring spinner swap. */
+.vgrid.is-stale {
+  opacity: 0.6;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+
+.vgrid__head {
+  display: flex;
+  align-items: center;
+  height: var(--grid-header-height);
+  padding: 0 var(--space-6);
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border-default);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.vgrid__th {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  padding-right: var(--grid-cell-px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vgrid__th.is-right {
+  text-align: right;
+}
+.vgrid__th--actions {
+  flex: 1 0 190px;
+  text-align: right;
+}
+
+.vgrid__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.vgrid__sort:hover {
+  color: var(--color-text-primary);
+}
+.vgrid__sort.is-active {
+  color: var(--color-action-primary);
+  font-weight: var(--weight-semibold);
+}
+.vgrid__sorticon {
+  display: inline-flex;
+  width: 14px;
+}
+
+.vgrid__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Hints the browser that this subtree scrolls independently. */
+  contain: strict;
+}
+
+.vgrid__sizer {
+  position: relative;
+  width: 100%;
+}
+
+.vgrid__row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--space-6);
+  border-bottom: 1px solid var(--color-border-subtle);
+  /* Promote to its own layer so translateY doesn't trigger layout. */
+  will-change: transform;
+  contain: layout style;
+}
+.vgrid__row:hover {
+  background: var(--color-bg-hover);
+}
+.vgrid__row.is-active {
+  background: var(--color-bg-selected);
+  box-shadow: inset 2px 0 0 var(--color-action-primary);
+}
+.vgrid__row:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+.vgrid--skeleton .vgrid__row {
+  position: static;
+}
+.vgrid--skeleton .vgrid__scroll {
+  contain: none;
+}
+
+.vgrid__td {
+  padding-right: var(--grid-cell-px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+}
+.vgrid__td.is-right {
+  text-align: right;
+}
+.vgrid__td--actions {
+  flex: 1 0 190px;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0;
+  overflow: visible;
+}
+
+/* ------------------------------------------------------------------- cells */
+
+.celllink {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-link);
+  font: inherit;
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  text-align: left;
+}
+.celllink:hover {
+  text-decoration: underline;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.muted {
+  color: var(--color-text-muted);
+}
+.ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.docs {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  justify-content: flex-end;
+  width: 100%;
+}
+.docs small {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.assignee {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.assignee__avatar {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-secondary);
+  font-size: 9px;
+  font-weight: var(--weight-semibold);
+}
+.assignee__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------- row actions */
+
+.rowactions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Actions stay hidden until the row is hovered/focused/active, so a 100-row
+ * page isn't a wall of buttons. They remain in the DOM and focusable, so
+ * keyboard users are unaffected. */
+.vgrid__row .rowactions {
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+.vgrid__row:hover .rowactions,
+.vgrid__row:focus-within .rowactions,
+.vgrid__row.is-active .rowactions {
+  opacity: 1;
+}
+
+.rowmenu {
+  position: absolute;
+  top: calc(100% - 4px);
+  right: 0;
+  z-index: var(--z-dropdown);
+  min-width: 200px;
+  padding: var(--space-2);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+}
+.rowmenu button {
+  display: block;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rowmenu button:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+.rowmenu button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.rowmenu__meta {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3) 0;
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* -------------------------------------------------------------- pagination */
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+  flex-wrap: wrap;
+}
+.pager__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.pager__approx {
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  font-size: var(--text-xs);
+  cursor: help;
+}
+.pager__busy {
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--color-action-primary);
+  border-right-color: transparent;
+  border-radius: var(--radius-pill);
+  animation: spin 620ms linear infinite;
+}
+
+.pager__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.pager__page {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--control-radius);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.pager__page:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+/* The active-page treatment from the reference design. */
+.pager__page.is-current {
+  background: var(--color-action-primary);
+  border-color: var(--color-action-primary);
+  color: var(--color-text-inverse);
+  font-weight: var(--weight-medium);
+}
+.pager__gap {
+  padding: 0 var(--space-1);
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------------------------------------------ states */
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-9) var(--space-6);
+  text-align: center;
+}
+.state__glyph {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-muted);
+}
+.state__glyph--error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+.state h3 {
+  font-size: var(--text-md);
+}
+.state p {
+  margin: 0;
+  max-width: 480px;
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+/* ----------------------------------------------------------------- dialogs */
+
+.dialog__lead {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.dialog__warn {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+  font-size: var(--text-sm);
+}
+
+.assignlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.assignlist button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.assignlist button:hover {
+  background: var(--color-bg-hover);
+}
+.assignlist__avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-pill);
+  background: var(--color-action-primary-subtle);
+  color: var(--color-action-primary);
+  font-size: 10px;
+  font-weight: var(--weight-semibold);
+}
+.assignlist__avatar--none {
+  background: var(--color-bg-sunken);
+  color: var(--color-text-muted);
+}
+.assignlist__current {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--color-success-fg);
+}

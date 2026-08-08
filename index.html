@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Claims Adjudication Workbench</title>
+    <meta
+      name="description"
+      content="Claims adjudication workbench — 20k+ record workqueue and large-document workspace."
+    />
+    <!--
+      No webfont link, deliberately.
+
+      The reference design specifies Poppins, and an earlier version loaded it
+      from Google Fonts. That is the wrong dependency for this application twice
+      over:
+
+        1. An internal claims tool runs on corporate networks that frequently
+           block third-party CDNs, and on VDI images with no general egress.
+           A blocked font request produced ERR_FAILED noise and a flash of
+           unstyled text on exactly the machines the product targets.
+        2. Sending a request to a third party on every page load is a data-privacy
+           question nobody wants to answer for a tool handling medical evidence.
+
+      Production would self-host a subset of the licensed font. Here we use the
+      system UI stack, which needs no network, renders identically offline, and
+      keeps the geometric-sans character on macOS and Windows.
+      See --font-sans in styles/tokens.css.
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

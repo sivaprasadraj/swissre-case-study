@@ -1,0 +1,154 @@
+@use './tokens';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background: var(--color-bg-canvas);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-semibold);
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Single global focus treatment. :focus-visible only, so pointer users never
+ * see a ring but keyboard users always do. The reference Figma specifies no
+ * focus state at all — this is an addition. */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link — becomes visible only when focused */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: var(--z-toast);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-control);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: top var(--motion-fast) var(--ease-standard);
+}
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+::selection {
+  background: var(--color-action-primary-subtle);
+}
+
+/* Scrollbars — kept slim so the virtualized grid and thumbnail rail don't
+ * lose horizontal space on Windows, where scrollbars are not overlaid. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Boot error state. The session gate is the one place a failure takes the whole
+ * app down, so it gets a real screen with a way out rather than a dead spinner. */
+.boot--error {
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 520px;
+  margin: 0 auto;
+  padding: var(--space-7);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+.boot--error h1 {
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+}
+.boot--error p {
+  margin: 0;
+  font-size: var(--text-base);
+}
+.boot__hint {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm) !important;
+  line-height: 1.55;
+}
+.boot__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+.boot__actions button {
+  height: var(--control-height);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--control-border);
+  border-radius: var(--control-radius);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+.boot__actions button:first-child {
+  background: var(--color-action-primary);
+  border-color: var(--color-action-primary);
+  color: var(--color-text-inverse);
+  font-weight: var(--weight-medium);
+}
+.boot__actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
